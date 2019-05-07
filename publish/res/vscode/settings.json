@@ -1,9 +1,7 @@
 {
     "editor.fontFamily": "Monaco",
-    "editor.lineHeight": 19,
     "editor.renderFinalNewline": true,
     "editor.rulers": [80],
     "terminal.integrated.fontFamily": "Monaco",
-    "window.zoomLevel": 0.75,
     "workbench.editor.enablePreview": false,
 }
