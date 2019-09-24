@@ -1,7 +1,4 @@
 {
-    "editor.fontFamily": "Monaco",
-    "editor.renderFinalNewline": true,
     "editor.rulers": [80],
-    "terminal.integrated.fontFamily": "Monaco",
     "workbench.editor.enablePreview": false,
 }
