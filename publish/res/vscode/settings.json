@@ -1,4 +1,5 @@
 {
     "editor.rulers": [80],
+    "files.trimTrailingWhitespace": true,
     "workbench.editor.enablePreview": false,
 }
