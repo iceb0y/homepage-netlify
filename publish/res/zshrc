@@ -3734,10 +3734,17 @@ if (( GRMLSMALL_SPECIFIC > 0 )) && isgrmlsmall ; then
 
 fi
 
+alias b="bazel build"
+alias bo="bazel build -c opt"
 alias clip="xclip -selection c"
 alias md=mkdir
 alias p3=python3
 alias pm="python3 -m"
+alias r="bazel run"
+alias ro="bazel run -c opt"
+alias sr="ssh -lroot"
+alias t="bazel test"
+alias to="bazel test -c opt"
 alias v=vim
 
 ## genrefcard.pl settings
