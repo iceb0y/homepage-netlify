@@ -1,4 +1,5 @@
 {
+    "editor.autoIndent": false,
     "editor.rulers": [80],
     "files.trimTrailingWhitespace": true,
     "go.lintTool": "revive",
