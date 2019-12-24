@@ -156,30 +156,6 @@ function is439 () {
     return 1
 }
 
-#f1# Checks whether or not you're running grml
-function isgrml () {
-    [[ -f /etc/grml_version ]] && return 0
-    return 1
-}
-
-#f1# Checks whether or not you're running a grml cd
-function isgrmlcd () {
-    [[ -f /etc/grml_cd ]] && return 0
-    return 1
-}
-
-if isgrml ; then
-#f1# Checks whether or not you're running grml-small
-    function isgrmlsmall () {
-        if [[ ${${${(f)"$(</etc/grml_version)"}%% *}##*-} == 'small' ]]; then
-            return 0
-        fi
-        return 1
-    }
-else
-    function isgrmlsmall () { return 1 }
-fi
-
 GRML_OSTYPE=$(uname -s)
 
 function islinux () {
@@ -213,16 +189,6 @@ function isutfenv () {
 
 # check for user, if not running as root set $SUDO to sudo
 (( EUID != 0 )) && SUDO='sudo' || SUDO=''
-
-# change directory to home on first invocation of zsh
-# important for rungetty -> autologin
-# Thanks go to Bart Schaefer!
-isgrml && function checkhome () {
-    if [[ -z "$ALREADY_DID_CD_HOME" ]] ; then
-        export ALREADY_DID_CD_HOME=$HOME
-        cd
-    fi
-}
 
 # check for zsh v3.1.7+
 
@@ -1578,8 +1544,8 @@ function command_not_found_handler () {
 
 #v#
 HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
-isgrmlcd && HISTSIZE=500  || HISTSIZE=5000
-isgrmlcd && SAVEHIST=1000 || SAVEHIST=10000 # useful for setopt append_history
+HISTSIZE=8192
+SAVEHIST=16384 # useful for setopt append_history
 
 # directory based profiles
 
@@ -2662,12 +2628,6 @@ if [[ -r /etc/debian_version ]] ; then
         #a3# Execute \kbd{grep-excuses}
         alias ge='grep-excuses'
     fi
-
-    # get a root shell as normal user in live-cd mode:
-    if isgrmlcd && [[ $UID -ne 0 ]] ; then
-       alias su="sudo su"
-    fi
-
 fi
 
 # use /var/log/syslog iff present, fallback to journalctl otherwise
@@ -2702,36 +2662,7 @@ __EOF0__
     fi
 fi
 
-if isgrmlcd; then
-    # No core dumps: important for a live-cd-system
-    limit -s core 0
-fi
-
-# grmlstuff
-function grmlstuff () {
-# people should use 'grml-x'!
-    if check_com -c 915resolution; then
-        function 855resolution () {
-            echo "Please use 915resolution as resolution modifying tool for Intel \
-graphic chipset."
-            return -1
-        }
-    fi
-
-    #a1# Output version of running grml
-    alias grml-version='cat /etc/grml_version'
-
-    if check_com -c grml-debootstrap ; then
-        function debian2hd () {
-            echo "Installing debian to harddisk is possible by using grml-debootstrap."
-            return 1
-        }
-    fi
-}
-
 # now run the functions
-isgrml && checkhome
-is4    && isgrml    && grmlstuff
 is4    && grmlcomp
 
 # keephack
@@ -3658,38 +3589,17 @@ if check_com -c hg ; then
 
 fi # end of check whether we have the 'hg'-executable
 
-# grml-small cleanups
-
-# The following is used to remove zsh-config-items that do not work
-# in grml-small by default.
-# If you do not want these adjustments (for whatever reason), set
-# $GRMLSMALL_SPECIFIC to 0 in your .zshrc.pre file (which this configuration
-# sources if it is there).
-
-if (( GRMLSMALL_SPECIFIC > 0 )) && isgrmlsmall ; then
-
-    unset "abk[V]"
-    unalias    'V'      &> /dev/null
-    unfunction vman     &> /dev/null
-    unfunction viless   &> /dev/null
-    unfunction 2html    &> /dev/null
-
-    # manpages are not in grmlsmall
-    unfunction manzsh   &> /dev/null
-    unfunction man2     &> /dev/null
-
-fi
-
 alias b="bazel build"
+alias bd="bazel build -c dbg"
 alias bo="bazel build -c opt"
-alias clip="xclip -selection c"
-alias md=mkdir
-alias p3=python3
+alias p=python3
 alias pm="python3 -m"
 alias r="bazel run"
+alias rd="bazel run -c dbg"
 alias ro="bazel run -c opt"
 alias sr="ssh -lroot"
 alias t="bazel test"
+alias td="bazel test -c dbg"
 alias to="bazel test -c opt"
 alias v=vim
 
