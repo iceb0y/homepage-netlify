@@ -1410,6 +1410,10 @@ key=(
 #
 #   - Most terminals send "ESC x" when Meta-x is pressed. Thus, sequences like
 #     '\ex' are allowed in here as well.
+autoload -U up-line-or-beginning-search	
+autoload -U down-line-or-beginning-search	
+zle -N up-line-or-beginning-search	
+zle -N down-line-or-beginning-search
 
 bind2maps emacs             -- Home   beginning-of-somewhere
 bind2maps       viins vicmd -- Home   vi-beginning-of-line
@@ -1419,8 +1423,8 @@ bind2maps emacs viins       -- Insert overwrite-mode
 bind2maps             vicmd -- Insert vi-insert
 bind2maps emacs             -- Delete delete-char
 bind2maps       viins vicmd -- Delete vi-delete-char
-bind2maps emacs viins vicmd -- Up     up-line-or-search
-bind2maps emacs viins vicmd -- Down   down-line-or-search
+bind2maps emacs viins vicmd -- Up     up-line-or-beginning-search
+bind2maps emacs viins vicmd -- Down   down-line-or-beginning-search
 bind2maps emacs             -- Left   backward-char
 bind2maps       viins vicmd -- Left   vi-backward-char
 bind2maps emacs             -- Right  forward-char
@@ -1562,7 +1566,7 @@ function command_not_found_handler () {
 # history
 
 #v#
-HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
+HISTFILE=${HISTFILE:-${ZDOTDIR:-${HOME}}/.zsh_history}
 HISTSIZE=8192
 SAVEHIST=16384 # useful for setopt append_history
 
