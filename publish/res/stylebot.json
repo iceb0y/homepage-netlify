@@ -1,0 +1,18 @@
+{
+  "*": {
+    "_enabled": true,
+    "_rules": {
+      "html": {
+        "--monospace-font-family": "monospace !important"
+      }
+    }
+  },
+  "github.com": {
+    "_enabled": "checked",
+    "_rules": {
+      ".blob-code-inner": {
+        "font-family": "monospace !important"
+      }
+    }
+  }
+}
