@@ -1,2 +1,7 @@
 [build]
-publish = "publish/"
+  publish = "publish/"
+
+[[redirects]]
+  from = "/res/zshrc"
+  to = "https://github.com/iceb0y/zsh-config/raw/main/zshrc"
+  status = 302
